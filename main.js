@@ -1,12 +1,13 @@
 // fruits.js 불러오기
-import  { FRUITS } from "./fruits.js";
+import { FRUITS } from "./fruits.js";
 
 // 모듈 불러오기
 let Engine = Matter.Engine,
     Runner = Matter.Runner,
     Render = Matter.Render,
     Bodies = Matter.Bodies,
-    World = Matter.World;
+    World = Matter.World,
+    Body = Matter.Body;
 
 // 엔진 선언
 const engine = Engine.create();
@@ -59,6 +60,7 @@ Runner.run(engine);
 let currentBody = null;
 let currentFruit = null;
 
+let disable = false;
 // 과일 떨어지는 함수 선언
 function addFruits() {
 
@@ -70,13 +72,45 @@ function addFruits() {
         index,
         isSleeping: false,
         render: {
-            sprite: {texture: `${fruit.name}.png`},
+            sprite: { texture: `${fruit.name}.png` },
         },
-        restitution: .5, 
+        restitution: .5,
     })
     currentBody = body;
     currentFruit = fruit;
     World.add(world, body);
+}
+
+// 키보드 입력받기
+window.onkeydown = (e) => {
+
+
+    if(disable)
+        return;
+
+    switch (e.code) {
+        case "KeyA":
+            Body.setPosition(currentBody, {
+                x: currentBody.position.x - 10,
+                y: currentBody.position.y,
+            });
+            break;
+        case "KeyD":
+            Body.setPosition(currentBody, {
+                x: currentBody.position.x + 10,
+                y: currentBody.position.y,
+            });
+            break;
+        case "KeyS":
+            currentBody.isSleeping = false;
+            disable = true;
+
+            setTimeout(() => {
+                addFruits();
+                disable = false;
+            }, 1000);
+            break;
+    }
 }
 
 addFruits();
