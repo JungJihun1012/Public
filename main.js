@@ -82,13 +82,13 @@ function addFruits() {
 }
 
 // 키보드 입력받기
-window.onkeydown = (e) => {
+window.onkeydown = (event) => {
 
 
     if(disable)
         return;
 
-    switch (e.code) {
+    switch (event.code) {
         case "KeyA":
             Body.setPosition(currentBody, {
                 x: currentBody.position.x - 10,
